@@ -31,6 +31,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         
         categories = yelpCategories()
         distance = distanceCategories()
+        distanceValue = distanceValueCategories()
         // Do any additional setup after loading the view.
     }
 
@@ -47,22 +48,27 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         var filters = [String: AnyObject]()
         
         var selectedCategories = [String]()
+        var selectedDistance = [Int]()
         for (row, isSelected) in switchStates {
             if isSelected {
                 selectedCategories.append(categories[row]["code"]!)
+                selectedDistance.append(distanceValue[row])
             }
         }
         if selectedCategories.count > 0 {
             filters["categories"] = selectedCategories
+        }else if selectedDistance.count > 0 {
+            filters["distance"] = selectedDistance
         }
         delegate?.filtersViewController?(self, didUpdateFilters: filters, selectedStates: switchStates)
+        
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch section {
-        case 0: return 4
+        case 0: return distance.count
         case 1: return categories.count
         default : return 1
         }
@@ -77,6 +83,11 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             
             cell.switchLabel.text = distance[indexPath.row]
             cell.delegate = self
+            if switchStates[indexPath.row] != nil {
+                cell.onSwitch.on = switchStates[indexPath.row]!
+            }else {
+                cell.onSwitch.on = false
+            }
             return cell
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
@@ -121,8 +132,11 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         return 2
     }
     
+    func distanceValueCategories() -> [Int] {
+        return [3, 5, 7, 9]
+    }
     func distanceCategories() -> [String] {
-        return ["0.3 miles", "0.5 miles" , "0.7 miles", "1.5 mile"]
+        return ["3 miles", "5 miles", "7 miles", "9 miles"]
     }
     
     func yelpCategories() -> [[String: String]] {
