@@ -45,7 +45,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Currently, I cannot implement the functions sort (best match, distance, highest rated), distance, deals (on/off), I will improve it later.
+- Currently, I cannot implement the functions sort (best match, distance, highest rated), distance, deals (on/off), I will improve it later.
+- It's working fine on Iphone 5, 5s.
 
 ## License
 
